@@ -1,0 +1,26 @@
+{
+  "name": "merkle-tree-rescue",
+  "version": "1.0.0",
+  "description": "construct merkle tree with rescue hash, each leaf should be calculated via a UUID to add randomness",
+  "main": "index.js",
+  "repository": "git@github.com:jonathanxuu/crypto.git",
+  "author": "jonathanxuu <1410101208@qq.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "prettier": "^2.7.1",
+    "ts-node-dev": "^2.0.0",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "scripts": {
+    "start": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "style:prettier": "prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@polkadot/util-crypto": "^10.1.11",
+    "@zcloak/dev": "^0.3.1",
+    "bn.js": "^5.2.1",
+    "rescue": "file:src/rescue"
+  }
+}
