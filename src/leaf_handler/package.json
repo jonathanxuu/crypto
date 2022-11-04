@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bn.js": "^5.2.1",
+    "merkle-tools": "^1.4.1",
     "rescue": "file:../rescue"
   }
 }
