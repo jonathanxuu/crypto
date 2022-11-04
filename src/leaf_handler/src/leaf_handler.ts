@@ -1,5 +1,4 @@
-import {u64a_rescue} from "rescue"
-import {U8a_to_BU64a, concat_BU64a, U64a_to_HexString} from "./types_handler"
+var crypto = require('crypto')
 
 export interface OriginLeaf {
     index: number;
@@ -17,11 +16,15 @@ export function leaf_handler(
     var saltedhash_vec: Array<String> = new Array();
     for (const key in leaves) {
       if (Object.prototype.hasOwnProperty.call(leaves, key)) {
+        // sha256 is dealing with u8a
         const element = leaves[key];
-        let rlp_rescue = u64a_rescue(U8a_to_BU64a(element.rlp));
-        let uuid_BU64a = u64a_rescue(U8a_to_BU64a(element.uuid));
-        let saltedhash = U64a_to_HexString(u64a_rescue(concat_BU64a(rlp_rescue, uuid_BU64a))); 
-        saltedhash_vec.push(saltedhash);
+      
+        let rlp_buffer = crypto.createHash('sha256').update(Buffer.from(element.rlp.buffer)).digest()
+        let uuid_buffer = crypto.createHash('sha256').update(Buffer.from(element.uuid.buffer)).digest()
+
+        let saltedhash_buffer = crypto.createHash('sha256').update(Buffer.concat([Buffer.from(rlp_buffer), Buffer.from(uuid_buffer)])).digest()
+        let saltedhash_string = saltedhash_buffer.toString('hex');
+        saltedhash_vec.push(saltedhash_string);
       }
     }
     return saltedhash_vec;
