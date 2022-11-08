@@ -28,7 +28,6 @@ export function leaf_handler(
     }
   }
   let roothash = calcRoothash(saltedhash_vec);
-  
   return roothash;
 }
 
