@@ -23,7 +23,7 @@
     "@polkadot/util-crypto": "^10.1.11",
     "@zcloak/dev": "^0.3.1",
     "bn.js": "^5.2.1",
-    "rescue": "file:src/rescue",
+    "rescue": "file:pkg",
     "uuid": "^9.0.0"
   }
 }

@@ -1,7 +1,8 @@
 import { assert } from "console";
-import { u64a_rescue } from "rescue"
+import { string_to_u64array, u64a_rescue,u8a_to_u64a } from "rescue"
 import { U8a_to_BU64a_buffer, concat_BU64a, U64a_to_HexString, U8a_to_BU64a_convert } from "./types_handler"
 var MerkleTools = require('../../merkle-tools/merkletools.js');
+const BN = require("bn.js");
 
 export interface OriginLeaf {
   index: number;
@@ -19,12 +20,20 @@ export function leaf_handler(
   for (const key in leaves) {
     if (Object.prototype.hasOwnProperty.call(leaves, key)) {
       const element = leaves[key];
+      
       let rlp_rescue = u64a_rescue(U8a_to_BU64a_convert(element.rlp));
-
       assert(element.uuid.length == 32, "The UUID is not valid")
       let uuid_BU64a = U8a_to_BU64a_buffer(element.uuid);
+
       let saltedhash = U64a_to_HexString(u64a_rescue(concat_BU64a(rlp_rescue, uuid_BU64a)));
       saltedhash_vec.push(saltedhash);
+      
+    }
+  }
+  for (const key in saltedhash_vec) {
+    if (Object.prototype.hasOwnProperty.call(saltedhash_vec, key)) {
+      const element = saltedhash_vec[key];
+      
     }
   }
   let roothash = calcRoothash(saltedhash_vec);
@@ -56,6 +65,27 @@ function calcRoothash(
   var merkleTools = new MerkleTools(treeOptions);
   merkleTools.addLeaves(saltedhashes);
   merkleTools.makeTree();
+
+
+  let auth_path = merkleTools.getProof(1);
+
+  for (const key in auth_path) {
+    if (Object.hasOwnProperty.call(auth_path, key)) {
+        const element = auth_path[key];
+        let per_auth_node = element.right? element.right : element.left;
+
+        let temp1 = new BN(per_auth_node, "hex").toArray().toString();
+        let temp1_vec = temp1.split(",");
+        while (temp1_vec.length < 32) {
+            temp1_vec.unshift(0);
+        }
+        temp1 = temp1_vec.toString();
+        let per_auth_node_u64vec = string_to_u64array(temp1);
+    }
+}
+
+
+
   let roothash = rootAddZeros_64(merkleTools.getMerkleRoot().toString('hex'));
   return roothash
 }

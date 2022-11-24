@@ -7936,8 +7936,8 @@
   "resolved" "https://registry.npmjs.org/requirejs/-/requirejs-2.3.6.tgz"
   "version" "2.3.6"
 
-"rescue@file:src/rescue":
-  "resolved" "file:src/rescue"
+"rescue@file:pkg":
+  "resolved" "file:pkg"
   "version" "0.1.0"
 
 "reselect@^4.0.0":

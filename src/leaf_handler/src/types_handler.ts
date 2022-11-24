@@ -1,4 +1,4 @@
-import { u64a_to_u8a } from "rescue"
+import { u64a_to_u8a, u8a_to_u64a } from "rescue"
 const BN = require("bn.js");
 
 // helper function -- help convert Uint8array to BigUint64Array (using buffer), this method should be used to handle UUID
@@ -6,17 +6,7 @@ export function U8a_to_BU64a_buffer(
   u8a: Uint8Array
 ): BigUint64Array {
   // if the u8a's length is not a multiple of 8, padding it
-  var u8a_extend: Uint8Array;
-  if (u8a.byteLength % 8 == 0) {
-    u8a_extend = u8a;
-  } else {
-    let extend_length = 8 - u8a.byteLength % 8;
-    u8a_extend = new Uint8Array(u8a.byteLength + extend_length);
-    u8a_extend.set(u8a);
-  }
-
-  let biguint64 = new BigUint64Array(u8a_extend.buffer);
-
+  let biguint64 = u8a_to_u64a(u8a)
   return biguint64
 }
 
